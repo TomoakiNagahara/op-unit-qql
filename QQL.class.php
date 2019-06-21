@@ -36,4 +36,43 @@ class QQL implements IF_UNIT
 	 *
 	 */
 	use OP_CORE, OP_UNIT;
+
+	/** Parse to array of op-unit-sql config.
+	 *
+	 * @param  string $qql
+	 * @return array  $config
+	 */
+	static function Parse($qql)
+	{
+		//	...
+		$config = [];
+
+		//	...
+		if( $pos = strpos($qql, '<-') ){
+			$fld = substr($qql, 0, $pos);
+			$qql = substr($qql, $pos+2);
+
+			//	....
+			$config['field'] = $fld;
+		};
+
+		//	...
+		if( $pos   = strrpos($qql, '=') ){
+			$table = substr ($qql, 0, $pos);
+			$value = substr ($qql, $pos+2);
+		};
+
+		//	...
+		if( $table ){
+			//	...
+			list($table, $field) = explode('.', trim($table).'.');
+
+			//	...
+			$config['table'] = $table;
+			$config['where'][trim($field)] = trim($value);
+		};
+
+		//	...
+		return $config;
+	}
 }
